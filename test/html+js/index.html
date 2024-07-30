@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>html + js</title>
+        <script>
+            const workshopsData = {
+                "город1": ["цех1", "цех2", "цех3"],
+                "город2": ["цех4", "цех5"],
+                "город3": ["цех6", "цех7", "цех8"],
+            };
+
+            const employeesData = {
+                "цех1": ["сотрудник1", "сотрудник2"],
+                "цех2": ["сотрудник3"],
+                "цех3": ["сотрудник4", "сотрудник5"],
+                "цех4": ["сотрудник6"],
+                "цех5": ["сотрудник7", "сотрудник8"],
+                "цех6": ["сотрудник9", "сотрудник10"],
+                "цех7": ["сотрудник11"],
+                "цех8": ["сотрудник12", "сотрудник13"],
+            };
+
+            function updateWorkshops() {
+                const citySelect = document.getElementById('city');
+                const workshopSelect = document.getElementById('workshop');
+
+                const selectedCity = citySelect.value;
+
+                workshopSelect.innerHTML = "";
+                const workshops = workshopsData[selectedCity] || [];
+
+                workshops.forEach(workshop => {
+                    const option = document.createElement('option');
+                    option.value = workshop;
+                    option.textContent = workshop;
+                    workshopSelect.appendChild(option);
+                });
+
+                updateEmployees();
+            }
+
+            function updateEmployees() {
+                const workshopSelect = document.getElementById('workshop');
+                const employeeSelect = document.getElementById('employee');
+
+                const selectedWorkshop = workshopSelect.value;
+
+                employeeSelect.innerHTML = "";
+                const employees = employeesData[selectedWorkshop] || [];
+
+                employees.forEach(employee => {
+                    const option = document.createElement('option');
+                    option.value = employee;
+                    option.textContent = employee;
+                    employeeSelect.appendChild(option);
+                });
+            }
+
+            function submitForm() {
+                const city = document.getElementById('city').value;
+                const workshop = document.getElementById('workshop').value;
+                const employee = document.getElementById('employee').value;
+                const brigade = document.getElementById('brigade').value;
+                const shift = document.getElementById('shift').value;
+
+                alert(`Тестовые данные:\nГород: ${city}\nЦех: ${workshop}\nСотрудник: ${employee}\nБригада: ${brigade}\nСмена: ${shift}`);
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Выбор данных</h1>
+        <form onsubmit="event.preventDefault(); submitForm();">
+            <label for="city">Город:</label>
+            <select id="city" onchange="updateWorkshops()">
+                <option value="город1">Город 1</option>
+                <option value="город2">Город 2</option>
+                <option value="город3">Город 3</option>
+            </select>
+            <br><br>
+
+            <label for="workshop">Цех:</label>
+            <select id="workshop" onchange="updateEmployees()">
+                <option value="">Выберите город сначала</option>
+            </select>
+            <br><br>
+
+            <label for="employee">Сотрудник:</label>
+            <select id="employee">
+                <option value="">Выберите цех сначала</option>
+            </select>
+            <br><br>
+
+            <label for="brigade">Бригада:</label>
+            <select id="brigade">
+                <option value="бригада1">Бригада 1</option>
+                <option value="бригада2">Бригада 2</option>
+                <option value="бригада3">Бригада 3</option>
+            </select>
+            <br><br>
+
+            <label for="shift">Смена:</label>
+            <select id="shift">
+                <option value="смена1">Смена 1</option>
+                <option value="смена2">Смена 2</option>
+                <option value="смена3">Смена 3</option>
+            </select>
+            <br><br>
+
+            <button type="submit">Отправить</button>
+        </form>
+    </body>
+</html>

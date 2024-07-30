@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>Выбор данных</h1>
+        <form @submit.prevent="submitForm">
+            <label for="city">Город:</label>
+            <select v-model="selectedCity" @change="updateWorkshops">
+                <option v-for="city in cities" :key="city.value" :value="city.value">{{ city.text }}</option>
+            </select>
+            <br><br>
+
+            <label for="workshop">Цех:</label>
+            <select v-model="selectedWorkshop" @change="updateEmployees" :disabled="!workshops.length">
+                <option v-for="workshop in workshops" :key="workshop" :value="workshop">{{ workshop }}</option>
+            </select>
+            <br><br>
+
+            <label for="employee">Сотрудник:</label>
+            <select v-model="selectedEmployee" :disabled="!employees.length">
+                <option v-for="employee in employees" :key="employee" :value="employee">{{ employee }}</option>
+            </select>
+            <br><br>
+
+            <label for="brigade">Бригада:</label>
+            <select v-model="selectedBrigade">
+                <option value="бригада1">Бригада 1</option>
+                <option value="бригада2">Бригада 2</option>
+                <option value="бригада3">Бригада 3</option>
+            </select>
+            <br><br>
+
+            <label for="shift">Смена:</label>
+            <select v-model="selectedShift">
+                <option value="смена1">Смена 1</option>
+                <option value="смена2">Смена 2</option>
+                <option value="смена3">Смена 3</option>
+            </select>
+            <br><br>
+
+            <button type="submit">Отправить</button>
+        </form>
+
+        <div v-if="formData">
+            <h3>Выбранные данные:</h3>
+            <p>Город: {{ selectedCity }}</p>
+            <p>Цех: {{ selectedWorkshop }}</p>
+            <p>Сотрудник: {{ selectedEmployee }}</p>
+            <p>Бригада: {{ selectedBrigade }}</p>
+            <p>Смена: {{ selectedShift }}</p>
+        </div>
+    </div>
+    <script>
+        new Vue({
+        el: '#app',
+        data: {
+            cities: [
+                { value: 'город1', text: 'Город 1' },
+                { value: 'город2', text: 'Город 2' },
+                { value: 'город3', text: 'Город 3' },
+            ],
+            selectedCity: '',
+            selectedWorkshop: '',
+            selectedEmployee: '',
+            selectedBrigade: 'бригада1',
+            selectedShift: 'смена1',
+            workshops: [],
+            employees: [],
+            workshopsData: {
+                'город1': ['цех1', 'цех2', 'цех3'],
+                'город2': ['цех4', 'цех5'],
+                'город3': ['цех6', 'цех7', 'цех8'],
+            },
+            employeesData: {
+                'цех1': ['сотрудник1', 'сотрудник2'],
+                'цех2': ['сотрудник3'],
+                'цех3': ['сотрудник4', 'сотрудник5'],
+                'цех4': ['сотрудник6'],
+                'цех5': ['сотрудник7', 'сотрудник8'],
+                'цех6': ['сотрудник9', 'сотрудник10'],
+                'цех7': ['сотрудник11'],
+                'цех8': ['сотрудник12', 'сотрудник13'],
+            },
+            formData: null
+        },
+        methods: {
+            updateWorkshops() {
+                this.workshops = this.workshopsData[this.selectedCity] || [];
+                this.selectedWorkshop = '';
+                this.employees = [];
+                this.selectedEmployee = '';
+            },
+            updateEmployees() {
+                this.employees = this.employeesData[this.selectedWorkshop] || [];
+                this.selectedEmployee = '';
+            },
+            submitForm() {
+                this.formData = {
+                    city: this.selectedCity,
+                    workshop: this.selectedWorkshop,
+                    employee: this.selectedEmployee,
+                    brigade: this.selectedBrigade,
+                    shift: this.selectedShift
+                };
+            }
+        }
+    });
+    </script>
+</body>
+</html>
